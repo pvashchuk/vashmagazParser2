@@ -1,0 +1,16 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time, re
+
+driver = webdriver.Firefox()
+driver.implicitly_wait(5)
+base_url = "http://vashmagazin.ua"
+###########
+driver.get(base_url + "/transport/vykup-oformlennya-avtomobiliv/")
+NavRubryka = driver.find_elements_by_class_name('kat')
+print(str(NavRubryka))
+for i in range (0, len(NavRubryka)):
+    NavRubrykaLink = NavRubryka[i].get_attribute("href")
+    print(str(NavRubrykaLink))
+
+driver.quit()
