@@ -6,9 +6,11 @@ driver = webdriver.PhantomJS()
 base_url = "http://vashmagazin.ua"
 driver.get(base_url + "/")
 NavRubryka = driver.find_elements_by_class_name('kat')
+LinkList = []
 out = open('telefony.csv', 'w', newline='', encoding='utf8')
 for i in range (0, len(NavRubryka)):
     NavRubrykaLink = NavRubryka[i].get_attribute("href")
+    LinkList.append(NavRubryka[i].get_attribute("href"))
     driver.get(NavRubryka[i].get_attribute("href"))
     Rubryka = driver.find_element_by_css_selector("span.foot_section_name").text
     subRubryka = driver.find_element_by_css_selector("span.foot_rub_name").text
