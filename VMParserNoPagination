@@ -1,0 +1,46 @@
+# -*- coding: utf-8 -*-
+from selenium import webdriver
+import time, csv
+
+driver = webdriver.PhantomJS()
+#driver = webdriver.Firefox()
+base_url = "http://vashmagazin.ua"
+driver.get(base_url + '/')
+ListCategories = driver.find_elements_by_class_name("kat") #масив елементів з атрибутами title, href, і текстом
+ListOFlinks = []
+for i in range(len(ListCategories)):
+        ListOFlinks.append(ListCategories[i].get_attribute("href"))
+#        print(ListOFlinks[i])
+
+for p in range(len(ListOFlinks)):
+        urlOfRub = str(ListOFlinks[p])
+        print(urlOfRub)
+        driver.get(urlOfRub)
+        Rubryka = driver.find_element_by_css_selector("span.foot_section_name").text
+        subRubryka = driver.find_element_by_css_selector("span.foot_rub_name").text
+#        nomer_vid = driver.find_element_by_xpath("//select[@id='nomer_view']").text
+        phoneNum = driver.find_elements_by_class_name("ner-auto-tel")
+        for t in phoneNum:
+            with open('telef.csv', 'w', newline='') as f:
+                writer = csv.writer(f)
+                writer.writerows([str((Rubryka) + '>' + (subRubryka) + '  '), t.text])
+
+## print((driver.current_url) + "<<current_url")
+##        for x in range(int(currentPage), int(lastPage)+1):
+##            driver.implicitly_wait(1)
+##            driver.get(urlOfRub + "/?page=" + str(x))
+##            Rubryka = driver.find_element_by_css_selector("span.foot_section_name").text
+##            subRubryka = driver.find_element_by_css_selector("span.foot_rub_name").text
+##            currentPage = driver.find_element_by_css_selector("div.page.current > a").text
+##            nomer_vid = driver.find_element_by_xpath("//select[@id='nomer_view']").text
+##            nextPage = int(currentPage) + 1
+##            lastPage = driver.find_element_by_xpath("//form[@id='price']/table[3]/tbody/tr[4]/td/div/div[6]/a").text
+##            phoneNum = driver.find_elements_by_class_name("ner-auto-tel")
+##            for t in phoneNum:
+##                with open('telef.csv', 'w', newline='') as f:
+##                    writer = csv.writer(f)
+##                    writer.writerows([str((Rubryka) + '>' + (subRubryka) + ' | стор: ' + (currentPage)) + '  ', str(nomer_vid) + ' > ',
+##                             t.text] )
+##
+
+driver.quit()
